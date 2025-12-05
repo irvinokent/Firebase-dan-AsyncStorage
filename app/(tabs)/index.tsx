@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button, FlatList, ActivityIndicator,
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
-import { auth, db } from '../../firebaseConfig'; // Import config yang kita buat
+import { auth, db } from '../../firebaseConfig';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -13,7 +13,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   // Cek Login saat aplikasi dibuka (Kombinasi LocalStorage + Firebase)
-  // Referensi PDF Hal 15: Cek token/user di storage saat app dibuka [cite: 138, 146]
   useEffect(() => {
     checkLoginStatus();
   }, []);
@@ -33,7 +32,7 @@ export default function App() {
     }
   };
 
-  // Fungsi Login (Tugas Poin 1)
+  // Fungsi Login
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Email dan password harus diisi");
@@ -48,7 +47,6 @@ export default function App() {
       };
       
       // SIMPAN DATA LOGIN KE ASYNCSTORAGE (PERSISTENT)
-      // Referensi PDF Hal 7: Data tetap tersimpan meski app ditutup [cite: 50, 53]
       await AsyncStorage.setItem('userData', JSON.stringify(userData));
       
       setUser(userData);
@@ -71,8 +69,7 @@ export default function App() {
     }
   };
 
-  // Fungsi Fetch Data Mahasiswa (Tugas Poin 3)
-  // Referensi PDF Hal 12: Mengambil data menggunakan get() [cite: 102]
+  // Fungsi Fetch Data Mahasiswa
   const fetchMahasiswa = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "mahasiswa"));
